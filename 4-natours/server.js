@@ -13,15 +13,6 @@ const DB = process.env.DATABASE.replace(
   process.env.DATABASE_PASSWORD,
 );
 
-// ? Local MongoDB
-// mongoose
-//   .connect(process.env.DATABASE_LOCAL, {
-//     useNewUrlParser: true,
-//     useCreateIndex: true,
-//     useFindAndModify: false,
-//   })
-//   .then(() => console.log('DB connection successful!'));
-
 // ? Atlas MongoDB
 mongoose
   .connect(DB, {
@@ -32,22 +23,14 @@ mongoose
   })
   .then(() => console.log('DB connection successful!'));
 
-const tourSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A tour must have a name'],
-    unique: true,
-  },
-  rating: {
-    type: Number,
-    default: 4.5,
-  },
-  price: {
-    type: Number,
-    requred: [true, 'A tour must have a price'],
-  },
-});
-const Tour = mongoose.model('Tour', tourSchema);
+// ? Local MongoDB
+// mongoose
+//   .connect(process.env.DATABASE_LOCAL, {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useFindAndModify: false,
+//   })
+//   .then(() => console.log('DB connection successful!'));
 
 // ? Start Server
 const port = process.env.PORT || 3000;
