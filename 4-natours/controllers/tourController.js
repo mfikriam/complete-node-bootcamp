@@ -27,12 +27,25 @@ exports.getAllTours = async (req, res) => {
       query = query.sort('-createdAt');
     }
 
-    // * Field Limiting (projecting)
+    // * 3) Field Limiting (projecting)
     if (req.query.fields) {
       const fields = req.query.fields.split(',').join(' ');
       query = query.select(fields);
     } else {
       query = query.select('-__v');
+    }
+
+    // * 4) Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    // ? page=2&limit=10, 1-10, page 1, 11-20, page 2, 21-31, page 3
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error('This page does not exist');
     }
 
     // console.log(JSON.parse(queryStr));
@@ -51,6 +64,7 @@ exports.getAllTours = async (req, res) => {
 
     // ? Execute Query
     const tours = await query;
+    // ? query.sort().select().skip().limit()
 
     // ? Send Response
     res.status(200).json({
