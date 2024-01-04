@@ -14,29 +14,28 @@ const app = require('./app');
 // console.log(process.env);
 
 // ? Atlas MongoDB
-const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD,
-);
-
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('DB connection successful!'));
-
-// ? Local MongoDB
+// const DB = process.env.DATABASE.replace(
+//   '<PASSWORD>',
+//   process.env.DATABASE_PASSWORD,
+// );
 // mongoose
-//   .connect(process.env.DATABASE_LOCAL, {
+//   .connect(DB, {
 //     useNewUrlParser: true,
 //     useCreateIndex: true,
 //     useFindAndModify: false,
 //     useUnifiedTopology: true,
 //   })
-//   .then(() => console.log('DB connection successful!'));
+//   .then(() => console.log('Atlas DB connection successful!'));
+
+// ? Local MongoDB
+mongoose
+  .connect(process.env.DATABASE_LOCAL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('Local DB connection successful!'));
 
 // ? Start Server
 const port = process.env.PORT || 3000;
