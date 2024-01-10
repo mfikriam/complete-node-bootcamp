@@ -70,8 +70,11 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
     },
   );
 
-  res.status(200).render('account', {
-    title: 'Your account',
-    user: updatedUser,
-  });
+  res
+    .status(200)
+    .set('Content-Security-Policy', "connect-src 'self' http://127.0.0.1:3000/")
+    .render('account', {
+      title: 'Your account',
+      user: updatedUser,
+    });
 });
